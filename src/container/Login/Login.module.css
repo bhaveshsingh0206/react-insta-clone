@@ -1,0 +1,167 @@
+.login-container {
+  padding-top: 10rem;
+  display: flex;
+  width: 100%;
+  height: 75rem;
+  justify-content: center;
+  align-items: flex-start;
+  /* margin-bottom: 20rem; */
+  /* background: #000; */
+}
+
+.left {
+  flex: 0 0 40rem;
+  height: 60rem;
+  /* background: red; */
+  display: flex;
+  justify-content: center;
+  /* padding: 5rem; */
+}
+.login-image {
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  /* background-color: white; */
+}
+.right {
+  flex: 0 0 35rem;
+  margin-left: 5rem;
+  margin-top: 5rem;
+  /* background: purple; */
+  height: auto;
+}
+
+.upper {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 3rem;
+  background-color: #fff;
+
+  padding: 2rem 4rem;
+}
+
+.lower {
+  /* height: 10rem; */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 4rem;
+}
+
+.logo {
+  font-family: "Dancing Script", cursive;
+  font-size: 4rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+  /* background-color: red; */
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: center; */
+}
+
+.input-container {
+  /* background-color: red; */
+}
+
+.other-login {
+}
+
+.OR {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* background-color: red; */
+  /* height: 2rem; */
+  margin-bottom: 5rem;
+}
+
+.OR span {
+  display: inline-block;
+  font-size: 1.4rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.line {
+  height: 1px;
+  flex: 0 0 40%;
+  background-color: #d5d5d5;
+}
+
+.facebook {
+  /* background-color: rosybrown; */
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: red;
+}
+
+.facebook span {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 1.5rem;
+}
+
+.facebook span img {
+  width: 100%;
+  height: 100%;
+}
+
+.facebook button {
+  outline: none;
+  font-size: 1.4rem;
+  font-weight: 600;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s;
+  padding: 1rem 0;
+}
+
+.facebook button:hover {
+  transform: translateY(-0.5rem);
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+}
+
+.facebook button:active {
+  transform: translateY(0.2rem);
+}
+
+.copyright {
+  display: flex;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.login {
+  padding: 1rem 3rem;
+  width: 100%;
+  outline: none;
+  background-color: #0095f6;
+  color: #fafafa;
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 3rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 3px;
+  transition: all 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.login:hover {
+  transform: translateY(-0.5rem);
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+}
+
+.login:active {
+  transform: translateY(0.2rem);
+}
