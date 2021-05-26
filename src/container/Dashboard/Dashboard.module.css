@@ -1,0 +1,11 @@
+.container {
+  margin-top: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 10rem;
+  /* width: 10%; */
+  /* display: inline-block; */
+  /* background-color: red; */
+  /* height: 100vh; */
+}

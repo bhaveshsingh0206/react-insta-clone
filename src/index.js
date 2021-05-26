@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './container/App';
 import reportWebVitals from './reportWebVitals';
-import { AuthContextProvider } from './store/authCtx';
+import { UserContextProvider } from './store/firebase-authUser';
 
 ReactDOM.render(
   <React.StrictMode>
-    <AuthContextProvider>
+    <UserContextProvider>
       <App />
-    </AuthContextProvider>
+    </UserContextProvider>
     
   </React.StrictMode>,
   document.getElementById('root')

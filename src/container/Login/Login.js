@@ -3,13 +3,16 @@ import loginImage from '../../assets/login-page.png'
 import googleIcon from '../../assets/search.png'
 import {useState, useRef, useContext} from 'react';
 import Input from '../../components/UI/Input'
-import {AUTH, DATABASE} from '../../utils/API'
-import {AUTH_KEY} from '../../utils/Constants';
-import AuthContext from '../../store/authCtx';
+// import {AUTH} from '../../utils/API'
+// import {AUTH_KEY} from '../../utils/Constants';
+// import AuthContext from '../../store/authCtx';
 import { useHistory } from 'react-router-dom';
 
+import firebase from '../../utils/firebase';
+import UserContext from '../../store/firebase-authUser';
+
 const Login = (props) => {
-    const authCtx = useContext(AuthContext);
+    const userCtx = useContext(UserContext);
     const [isLogin, setIsLogin] = useState(true);
     const nameRef = useRef();
     const passwordRef = useRef();
@@ -18,58 +21,58 @@ const Login = (props) => {
     const switchLoginHandler = () => {
         setIsLogin(!isLogin);
     }
-
-    async function onSubmitRequest(event) {
+    if(userCtx.isLoggedIn) {
+        history.push('/')
+    }
+     async function onSubmitRequest(event) {
         event.preventDefault();
+        
         if(!isLogin) {
             let email = emailRef.current.value
             let password = passwordRef.current.value
             let name = nameRef.current.value
-            let data = {email:email, password:password, returnSecureToken: true}
+            
             if(email!==""||password!==""||name!=="") {
-                try{
-                    let res = await AUTH.post(`accounts:signUp?key=${AUTH_KEY}`,data ,{
-                        method: 'POST'
-                        
-                    })
-                    console.log("res ",res)
-                    const response = res.data
-                    if(res.data&&response.localId) {
-                        console.log(response.idToken)
-                        let obj = {name:name, email:email, uid: response.localId}
-                        res = await DATABASE.post(`/users.json?auth=${response.idToken}`,obj,{
-                            method:'POST'
-                        })
-                        authCtx.login(response.idToken)
-                        history.replace('/');
-                    }
 
-                } catch(error){
-                    console.log(error.response)
-                    if(error&&error.response&&error.response.data&&error.response.data.error&&error.response.data.error.message)
-                        console.log(error.response.data.error.message)
+                try{
+                    let res = await firebase.auth().createUserWithEmailAndPassword(email, password)
+                    res = await JSON.parse(JSON.stringify(res))
+                    
+                    if(res.user) {
+                        const uid = res.user.uid
+                        let obj = {email:email, name:name, followers:[], followings:[], posts:[], uid: uid}
+                        try{
+                            const db = firebase.firestore().collection('users').doc(uid)
+                            await db.set(obj)
+                            userCtx.login()
+                            history.replace('/')
+                        } catch(e) {
+                            console.log(e)
+                        }
+                    }
+                } catch(e){
+                    console.log(e)
                 }
+                
             }
         } else {
             let email = emailRef.current.value
             let password = passwordRef.current.value
-            let data = {email:email, password:password, returnSecureToken: true}
+            // let data = {email:email, password:password, returnSecureToken: true}
             if(email!==""||password!=="") {
                 try{
-                    let res = await AUTH.post(`accounts:signInWithPassword?key=${AUTH_KEY}`,data ,{
-                        method: 'POST'
+                    let res = await firebase.auth().signInWithEmailAndPassword(email, password)
+                    res = await JSON.parse(JSON.stringify(res))
+                    console.log(res)
+                    if(res.user) {
+                        console.log("pushed")
                         
-                    })
-                    console.log("res ",res)
-                    const response = res.data
-                    if(res.data&&response.localId) {
-                        authCtx.login(response.idToken)
-                        history.replace('/');
+                        userCtx.login()
+                        history.replace('/')
                     }
-                } catch(error){
-                    console.log(error.response)
-                    if(error&&error.response&&error.response.data&&error.response.data.error&&error.response.data.error.message)
-                        console.log(error.response.data.error.message)
+                    // console.log(res)
+                } catch(e){
+                    console.log(e)
                 }
             }
         }

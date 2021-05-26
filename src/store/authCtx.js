@@ -1,28 +1,75 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
+// import firebase from '../utils/firebase'
 const AuthContext = React.createContext({
     token: '',
     isLoggedIn: false,
-    login: (token) => {},
+    login: (token, expirationTime) => {},
     logout: () => {}
 })
 
-export const AuthContextProvider = (props) => {
-    const intialToken = localStorage.getItem('token');
-    const [token, setToken] = useState(intialToken)
+const calculateRemainingTime = (expirationTime) => {
+    const currentTime = new Date().getTime();
+    
+    const remainingTime = expirationTime - currentTime;
+    console.log('remainingTime calc ', remainingTime)
+    return remainingTime;
+}
 
-    const isLoggedIn = !!token
+const validToken = () => {
+    const storedToken = localStorage.getItem('token');
+    const storedTime = localStorage.getItem('expirationTime');
 
-    const loginHandler = (token) => {
-        setToken(token);
-        localStorage.setItem('token', token)
-    }
-
-    const logoutHandler = () => {
-        setToken(null);
+    const remainingTime = calculateRemainingTime(storedTime)
+    if (remainingTime<=0) {
         localStorage.removeItem('token')
+            localStorage.removeItem('expirationTime')
+            return null;        
+    }
+    return {token:storedToken, time:remainingTime}
+}
+
+export const AuthContextProvider = (props) => {
+    const tokenData = validToken();
+    
+    let initialToken = '';
+    
+    
+    
+
+
+
+    if(tokenData) {
+        initialToken = tokenData.token
+    }
+    const [token, setToken] = useState(initialToken);
+    const isLoggedIn = !!token
+    
+    const logoutHandler = () => {
+        setToken('');
+        localStorage.removeItem('token')
+            localStorage.removeItem('expirationTime')
 
     }
+
+    const loginHandler = (token, expirationTime) => {
+        setToken(token)
+        
+        localStorage.setItem('token', token)
+        
+        localStorage.setItem('expirationTime', expirationTime)
+        // console.log('expirationTime')
+        const remainingTime = calculateRemainingTime(expirationTime);
+        
+        
+        setTimeout(logoutHandler, remainingTime)
+    }
+
+    useEffect(() => {
+        if(tokenData) {
+            setTimeout(logoutHandler, tokenData.time)
+        }
+        
+    }, [tokenData])
 
     const contextValue = {
         token:token,

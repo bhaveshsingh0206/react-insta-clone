@@ -1,14 +1,47 @@
 // import classes from './Dashboard.module.css';
-import {useContext} from 'react'
-import AuthContext from '../../store/authCtx';
+import { useEffect} from 'react'
+// import UserContext from '../../store/firebase-authUser';
+import firebase from '../../utils/firebase';
+import Navbar from '../../components/Navbar/Navbar';
+import classes from './Dashboard.module.css';
+import Profile from './Profile/Profile'
+import Message from './Message/Message'
+import Feed from './Feed/Feed'
+import Notif from './Notif/Notif'
+import {  Switch, Route, Redirect } from 'react-router-dom';
+
+
+
 
 const Dashboard = (props) => {
-const authCtx = useContext(AuthContext);
-const logouthandler = () => {
-    authCtx.logout()
-}
+// const userCtx = useContext(UserContext);
+
+// const logouthandler = () => {
+//     userCtx.logout()
+// }
+
+
+
 return(
-    <p>Log out Boi <button onClick={logouthandler}>Logout</button></p>
+    <>
+    <Navbar />
+    <main className={classes.container}>
+        <Switch>
+            <Route path="/" exact>
+                <Redirect to="/feed"/>
+            </Route>
+        <Route path="/feed" exact component={Feed}/>
+            <Route path="/messages" exact component={Message}/>
+            <Route path="/notifs" exact component={Notif}/>
+            
+            <Route path="/:id" component={Profile}/>
+            
+            
+        </Switch>
+        
+    </main>
+    
+    </>
 )
 }
 

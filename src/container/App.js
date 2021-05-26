@@ -1,19 +1,26 @@
 // import classes from "./App.module.css";
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import {useContext} from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+// import {useContext} from 'react'
 import Dashboard from './Dashboard/Dashboard';
 import Login from './Login/Login';
-import AuthContext from '../store/authCtx';
+// import UserContext from '../store/firebase-authUser';
+import PrivateRoute from '../utils/PrivateRoute';
 
 
 function App() {
-  const authCtx = useContext(AuthContext);
+  // const {currentUser} = useContext(UserContext);
   return (
     <Router>
       <Switch>
-        {!authCtx.isLoggedIn&&<Route path="/login" component={Login} />}
-        {authCtx.isLoggedIn&&<Route path="/" component={Dashboard} exact/>}
-        <Route path="*"><Redirect to={authCtx.isLoggedIn?"/":"/login"}/></Route>
+      {/* {!currentUser&&<Route path="/login" exact component={Login} />}
+      {currentUser&&<Route path="/" exact component={Dashboard} />}
+      <Route path="*"><Redirect to={currentUser?"/":"/login"}/></Route> */}
+      <Route path="/login" exact component={Login} />
+      <PrivateRoute path="/" component={Dashboard} />
+      
+      {/* <Route path="*">
+        <Redirect to="/" />
+      </Route> */}
       </Switch>
     </Router>
   );
