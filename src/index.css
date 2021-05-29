@@ -5,17 +5,21 @@
   box-sizing: border-box;
   /* height: 100%; */
 }
-
+* {
+  margin: 0;
+  padding: 0;
+}
 html {
   font-size: 62.5%;
-  /* height: 100%; */
+  /* margin: 0;
+  padding: 0; */
 }
 
 body {
   font-family: Helvetica, sans-serif;
   background-color: #fafafa;
   color: #333;
-  margin: 0;
-  padding: 0;
+  /* margin: 0;
+  padding: 0; */
   /* height: 100%; */
 }

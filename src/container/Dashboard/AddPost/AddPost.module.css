@@ -1,0 +1,121 @@
+.container {
+  margin: 0 auto;
+  width: 60%;
+  padding: 5rem;
+  /* height: 20rem; */
+  /* background-color: lawngreen; */
+}
+
+.container h4 {
+  text-align: center;
+  font-weight: 500;
+  font-size: 3rem;
+}
+
+.postText {
+  width: 100%;
+  /* min-height: 5rem; */
+  height: 10rem;
+  padding: 1rem 2rem;
+  border: none;
+  outline: none;
+  font: inherit;
+  color: inherit;
+  font-size: 1.8rem;
+  resize: none;
+  background-color: #fafafa;
+}
+
+.card {
+  margin-top: 2rem;
+  padding: 2rem;
+  border-radius: 5px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+}
+
+.btn {
+  margin-top: 2rem;
+  padding: 1rem 3rem;
+  width: 100%;
+  outline: none;
+  background-color: #0095f6;
+  color: #fafafa;
+  font-size: 1.4rem;
+  font-weight: 600;
+
+  margin: 0 auto;
+  margin-bottom: 3rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 5px;
+  transition: all 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  display: block;
+}
+
+.btn:hover {
+  background-color: #0f87d8;
+}
+
+.btn:active {
+  transform: translateY(0.2rem);
+}
+
+.btn:disabled {
+  background-color: #ccc;
+  cursor: no-drop;
+}
+
+.photoControls {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  align-items: center;
+}
+
+.photoControls span {
+  display: inline-block;
+  font-size: 1.5rem;
+  font-weight: 600;
+
+  /* padding: 1rem 0; */
+}
+.photoControls input {
+  display: none;
+}
+/* .photoControls input {
+  font-size: 2.5rem;
+  color: seagreen;
+  outline: none;
+  border: none;
+  padding: 1rem;
+  background-color: transparent;
+} */
+
+.photoPicker {
+  margin-right: 2rem;
+}
+.photoPicker span {
+  display: inline-block;
+  /* padding: 2rem; */
+  font-size: 2rem;
+  color: seagreen;
+  transition: all 0.2s;
+}
+
+.photoPicker:hover span {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+.image {
+  display: inline-block;
+  margin-top: 2rem;
+  width: 100%;
+  height: auto;
+  /* height: auto; */
+}

@@ -1,25 +1,24 @@
 // import classes from './Dashboard.module.css';
-import { useEffect} from 'react'
+// import { useEffect} from 'react'
 // import UserContext from '../../store/firebase-authUser';
-import firebase from '../../utils/firebase';
+// import firebase from '../../utils/firebase';
 import Navbar from '../../components/Navbar/Navbar';
 import classes from './Dashboard.module.css';
 import Profile from './Profile/Profile'
 import Message from './Message/Message'
 import Feed from './Feed/Feed'
 import Notif from './Notif/Notif'
-import {  Switch, Route, Redirect } from 'react-router-dom';
+import AddPost from './AddPost/Addpost'
+import {  Switch, Route, Redirect, useHistory } from 'react-router-dom';
 
 
 
 
 const Dashboard = (props) => {
-// const userCtx = useContext(UserContext);
-
-// const logouthandler = () => {
-//     userCtx.logout()
-// }
-
+const history = useHistory()
+const addPostHandler = () => {
+    history.push('/addpost')
+}
 
 
 return(
@@ -33,12 +32,14 @@ return(
         <Route path="/feed" exact component={Feed}/>
             <Route path="/messages" exact component={Message}/>
             <Route path="/notifs" exact component={Notif}/>
-            
+            <Route path="/addpost" exact component={AddPost}/>
             <Route path="/:id" component={Profile}/>
             
             
         </Switch>
-        
+        <div onClick={addPostHandler} className={classes.addPost}>
+            <i className="fas fa-plus"></i>
+        </div>
     </main>
     
     </>

@@ -1,11 +1,26 @@
 .container {
   margin-top: 10rem;
+  padding: 0 10rem;
+}
+
+.addPost {
+  position: fixed;
+  width: 6rem;
+  height: 6rem;
+  background-color: #0095f6;
+  bottom: 5rem;
+  right: 5rem;
+  border-radius: 100%;
+  box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.5);
+  transition: all 0.2s;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding: 0 10rem;
-  /* width: 10%; */
-  /* display: inline-block; */
-  /* background-color: red; */
-  /* height: 100vh; */
+  align-items: center;
+  font-size: 2.5rem;
+  color: #fafafa;
+}
+
+.addPost:hover {
+  transform: translateY(-0.3rem);
+  /* box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.5); */
 }
