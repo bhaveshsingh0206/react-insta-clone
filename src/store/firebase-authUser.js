@@ -3,7 +3,9 @@ import firebase from '../utils/firebase'
 
 
 const UserContext = React.createContext({
-    currentUser: {},
+    currentUser: {
+        uid:''
+    },
     logout: ()=>{},
     isLoggedIn: false,
     login:()=>{}
@@ -12,7 +14,7 @@ const UserContext = React.createContext({
 
 export const UserContextProvider = (props) => {
 
-    const [currentUser, setCurrentUser] = useState(null);
+    const [currentUser, setCurrentUser] = useState({uid:''});
     // console.log(localStorage.getItem('isLoggedIn'))
     let initial = false
 
@@ -24,7 +26,7 @@ export const UserContextProvider = (props) => {
     const [isLoggedIn, setLoggedIn] = useState(initial)
     
     useEffect( ()=> {
-        console.log("okokoko")
+        
         const un = firebase.auth().onAuthStateChanged((user)=>{
             console.log("loaded user data")
             setCurrentUser(JSON.parse(JSON.stringify(user)))

@@ -35,10 +35,11 @@ const AddPost = (props) => {
                     // console.log(obj)
                     db.set(obj).then(()=>{
                         let postRef = db
+                        console.log(postRef)
                         console.log("Post succesful")
                         userRef.update({
                             
-                            posts: firebase.firestore().FieldValue.arrayUnion(postRef)
+                            posts: firebase.firestore.FieldValue.arrayUnion(postRef)
                         }).then(()=>{
                             console.log("Done")
                         }).catch(()=>{
@@ -62,6 +63,7 @@ const AddPost = (props) => {
 
     const addPostHandler = () => {
         // console.log('Add Posdedt')
+        console.log(firebase.firestore.FieldValue.arrayUnion(["ok"]))
         if(image===''||caption==='') {
             console.log("Enter Details");
             return
