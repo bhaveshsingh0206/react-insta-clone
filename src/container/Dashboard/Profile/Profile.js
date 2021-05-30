@@ -5,19 +5,22 @@ import firebase from '../../../utils/firebase'
 import {useParams} from 'react-router-dom';
 import PostsThumbnail from './PostsThumbnail';
 import placeholder from '../../../assets/placeholder.jpeg'
+import Post from '../Posts/Post';
 
 const Profile = (props) => {
 
     const userCtx = useContext(UserContext);
+    
+    const [image, setImage] = useState('')
 
     const { id } = useParams();
     const uid = userCtx.currentUser.uid
     const [error, setError] = useState(false)
     
 
-    const [userData, setUserData] = useState({name:'', posts:[], email:'', followers:[], followings:[], posts:[]});
-
-
+    const [userData, setUserData] = useState(null);
+    const [showModal, setModal] = useState(false)
+    const [postsDetails, setPostDetails] = useState(null)
     const logouthandler = () => {
         userCtx.logout()
     }
@@ -32,6 +35,7 @@ const Profile = (props) => {
                 let data = await ref.get()
                 data = data.data()
                 console.log(data)
+                
                 if(!data) {
                     setError(true)
                 } else {
@@ -44,7 +48,7 @@ const Profile = (props) => {
                         posts.push(postData)
                       }
 
-
+                    setImage(data.profileImg)
                     data.posts = posts
                     setUserData(data)
                     setError(false)
@@ -55,22 +59,99 @@ const Profile = (props) => {
                 setError(true)
                 console.log(error)
             }
-            
-            // console.log(data)
-
-            // let followingData = await data.followings[0].get()
-            // console.log(followingData.data())
         }   
 
         getData()
     }, [id])
 
+    const changeProfileHandler = (event) => {
+        
+        setImage(URL.createObjectURL(event.target.files[0]))
+        let storageRef = firebase.storage().ref();
+
+        storageRef = storageRef.child(`users/${new Date().getTime()}/profileImg.jpg`)
+        try{
+            storageRef.put(event.target.files[0]).then((snapshot) => {
+                snapshot.ref.getDownloadURL().then(async (downloadURL) => {
+                    let userRef = firebase.firestore().collection('users').doc(uid)
+
+                    await userRef.update({profileImg: downloadURL})
+                })
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    async function expandPosthandler(id){
+        try{
+        let postsDetail = userData.posts.filter((post)=>{
+            return post.id===id
+        })
+
+        postsDetail = postsDetail[0]
+        console.log(postsDetail)
+        let obj = {
+            postid: postsDetail.id,
+            postImage: postsDetail.imageUrl,
+            likes:postsDetail.likes,
+            time:postsDetail.time,
+            caption:postsDetail.caption
+        }
+        
+        let userDetails = await postsDetail.userid.get()
+        userDetails = userDetails.data()
+        // console.log("userDetails ", userDetails)
+        obj.name=userDetails.name
+        obj.profileImg=userDetails.profileImg
+
+        let comments = [];
+        const isLiked = postsDetail.likes.find((id)=>{
+            return uid === id
+        })
+        obj.isLiked = isLiked?true:false            
+        for (const comment of postsDetail.comments) {
+            let o = {}
+            let details = await comment.user.get()
+            details = details.data()
+
+            o.comment = comment.comment
+            o.uid=  details.uid
+            o.name=  details.name
+            o.profileImg=  details.profileImg
+
+            comments.push(o);
+        }
+        
+        obj.comments = comments
+        setPostDetails(obj)
+        
+        setTimeout(()=>{
+            console.log("--------------")
+            console.log(postsDetail)
+            setModal(true)
+        }, 500)
+        
+        } catch(e){
+            console.log(e)
+        }
+        
+    }
+
+    const dismissHandler = () => {
+        setModal(false)
+    }
+
     return(
+        <>
+         {showModal&&<Post data={postsDetails} dismiss={dismissHandler} />}
         <div className={classes.container}>
-            {!error&&<>
+            {!error&&userData&&<>
             <div className={classes.basic}>
                 <div className={classes.img}>
-                    <img src={placeholder} alt='Profile pic' />
+                    <img src={image.length===0?placeholder:image} alt='Profile pic' />
+                    {id===uid&&<><label htmlFor="profile" className={classes.label}></label>
+                    <input onChange={changeProfileHandler} id="profile" type="file" /></>}
                 </div>
 
                 <div className={classes['info']}>
@@ -82,11 +163,13 @@ const Profile = (props) => {
                 </div>
             </div>
 
-            <PostsThumbnail posts={userData.posts} />
+            <PostsThumbnail expand={expandPosthandler} posts={userData.posts} />
+            
             </>}
             {error&&<h2>No such Page Found</h2>}
         </div>
-    
+       
+        </>
     );
 }
 

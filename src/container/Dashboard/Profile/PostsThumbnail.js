@@ -1,13 +1,18 @@
+// import { useState } from 'react';
+// import { useHistory } from 'react-router';
 import classes from './PostsThumbnail.module.css';
-import image from '../../../assets/profile.jpg'
 
 const PostsThumbnail = (props) => {
+    
+    const postHandler = (event) => {
+        props.expand(event.target.id)
+    }
 
     const posts = props.posts.map((post)=>{
         return (
-            <div className={classes.grid}>
+            <div onClick={postHandler} id={post.id} key={post.id} className={classes.grid}>
             <img src={post.imageUrl} alt="post"/>
-            <div className={classes.backdrop}>
+            <div id={post.id}  className={classes.backdrop}>
                 <div className={classes.info}>
                     <span><i className="fas fa-heart" /> {post.likes.length}</span>
                     <span><i className="fas fa-comment" /> {post.comments.length}</span>
@@ -19,7 +24,8 @@ const PostsThumbnail = (props) => {
 
     return(
     <div className={classes.posts}>
-        {posts}
+        {posts.length>0&&posts}
+        {posts.length===0&&<h1 className={classes.nodata}>No posts</h1>}
     </div>);
 }
 

@@ -40,7 +40,7 @@ const Login = (props) => {
                     
                     if(res.user) {
                         const uid = res.user.uid
-                        let obj = {email:email, name:name, followers:[], followings:[], posts:[], uid: uid}
+                        let obj = {email:email, name:name, followers:[], followings:[], posts:[], uid: uid, profileImg:''}
                         try{
                             const db = firebase.firestore().collection('users').doc(uid)
                             await db.set(obj)

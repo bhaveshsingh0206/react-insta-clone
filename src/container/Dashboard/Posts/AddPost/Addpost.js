@@ -1,8 +1,8 @@
 import { useContext, useState } from 'react';
 import classes from './AddPost.module.css';
 import { v4 as uuidv4 } from 'uuid';
-import firebase from '../../../utils/firebase';
-import UserContext from '../../../store/firebase-authUser';
+import firebase from '../../../../utils/firebase';
+import UserContext from '../../../../store/firebase-authUser';
 
 const AddPost = (props) => {
     const [image, setImage] = useState('');
@@ -28,6 +28,7 @@ const AddPost = (props) => {
                         userid: userRef,
                         comments:[],
                         time: new Date().getTime(),
+                        id:uuidv4()
                         }
     
                     const db = firebase.firestore().collection('posts').doc(postId)

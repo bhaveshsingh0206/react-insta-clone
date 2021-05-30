@@ -31,6 +31,7 @@
   height: 100%;
   opacity: 0;
   background-color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
   transition: all 0.2s;
   /* z-index: -10; */
 }
@@ -59,4 +60,10 @@
 
 .info span i {
   margin-right: 0.5rem;
+}
+
+.nodata {
+  margin: 0 auto;
+  font-size: 3rem;
+  font-weight: 500;
 }

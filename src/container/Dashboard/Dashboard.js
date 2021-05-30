@@ -8,8 +8,9 @@ import Profile from './Profile/Profile'
 import Message from './Message/Message'
 import Feed from './Feed/Feed'
 import Notif from './Notif/Notif'
-import AddPost from './AddPost/Addpost'
+import AddPost from './Posts/AddPost/Addpost'
 import {  Switch, Route, Redirect, useHistory } from 'react-router-dom';
+// import Post from './Posts/Post';
 
 
 
@@ -33,6 +34,7 @@ return(
             <Route path="/messages" exact component={Message}/>
             <Route path="/notifs" exact component={Notif}/>
             <Route path="/addpost" exact component={AddPost}/>
+            {/* <Route path="/p/d" exact component={Post}/> */}
             <Route path="/:id" component={Profile}/>
             
             
