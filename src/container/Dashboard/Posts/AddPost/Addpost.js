@@ -28,7 +28,7 @@ const AddPost = (props) => {
                         userid: userRef,
                         comments:[],
                         time: new Date().getTime(),
-                        id:uuidv4()
+                        id:postId
                         }
     
                     const db = firebase.firestore().collection('posts').doc(postId)

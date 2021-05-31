@@ -25,9 +25,13 @@ const Profile = (props) => {
         userCtx.logout()
     }
 
+    useEffect(()=>{
+        console.log("userData ", userData)
+    }, [userData])
 
 
     useEffect(()=>{
+        
         async function getData() {
             const db = firebase.firestore()
             const ref = db.collection('users').doc(id)
@@ -62,7 +66,7 @@ const Profile = (props) => {
         }   
 
         getData()
-    }, [id])
+    }, [showModal, id])
 
     const changeProfileHandler = (event) => {
         
@@ -84,6 +88,9 @@ const Profile = (props) => {
     }
 
     async function expandPosthandler(id){
+
+        console.log("idddd===== ", id)
+
         try{
         let postsDetail = userData.posts.filter((post)=>{
             return post.id===id
@@ -96,7 +103,8 @@ const Profile = (props) => {
             postImage: postsDetail.imageUrl,
             likes:postsDetail.likes,
             time:postsDetail.time,
-            caption:postsDetail.caption
+            caption:postsDetail.caption,
+            userid:postsDetail.userid
         }
         
         let userDetails = await postsDetail.userid.get()

@@ -4,15 +4,18 @@ import classes from './PostsThumbnail.module.css';
 
 const PostsThumbnail = (props) => {
     
-    const postHandler = (event) => {
-        props.expand(event.target.id)
+    const postHandler = (event,id) => {
+        console.log(id)
+        console.log("idddd===== in thumb", id)
+
+        props.expand(id)
     }
 
     const posts = props.posts.map((post)=>{
         return (
-            <div onClick={postHandler} id={post.id} key={post.id} className={classes.grid}>
+            <div onClick={(event)=>{postHandler(event, post.id)}} id={post.id} key={post.id} className={classes.grid}>
             <img src={post.imageUrl} alt="post"/>
-            <div id={post.id}  className={classes.backdrop}>
+            <div className={classes.backdrop}>
                 <div className={classes.info}>
                     <span><i className="fas fa-heart" /> {post.likes.length}</span>
                     <span><i className="fas fa-comment" /> {post.comments.length}</span>

@@ -132,12 +132,17 @@
 .comments ul li {
   font-size: 1.4rem;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  /* align-items: center; */
 }
-
+.comments ul li p {
+  flex: 1;
+}
 .bold {
   font-weight: 600;
   margin-right: 1rem;
+  cursor: pointer;
+  /* width: 20rem; */
 }
 
 .likes h4 {
@@ -187,17 +192,9 @@
   padding: 2rem;
   margin-left: 1rem;
   background-color: transparent;
+  cursor: pointer;
 }
 
-.nodata {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  font-size: 1.6rem;
-  color: #999;
-  font-weight: 600;
-}
 .commentUser {
   width: 4rem;
   height: 4rem;
