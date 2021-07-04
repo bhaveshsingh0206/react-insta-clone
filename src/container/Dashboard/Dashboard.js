@@ -10,12 +10,15 @@ import Feed from './Feed/Feed'
 import Notif from './Notif/Notif'
 import AddPost from './Posts/AddPost/Addpost'
 import {  Switch, Route, Redirect, useHistory } from 'react-router-dom';
+// import { useState } from 'react';
 // import Post from './Posts/Post';
 
 
 
 
 const Dashboard = (props) => {
+
+
 const history = useHistory()
 const addPostHandler = () => {
     history.push('/addpost')

@@ -3,9 +3,7 @@ import loginImage from '../../assets/login-page.png'
 import googleIcon from '../../assets/search.png'
 import {useState, useRef, useContext} from 'react';
 import Input from '../../components/UI/Input'
-// import {AUTH} from '../../utils/API'
-// import {AUTH_KEY} from '../../utils/Constants';
-// import AuthContext from '../../store/authCtx';
+
 import { useHistory } from 'react-router-dom';
 
 import firebase from '../../utils/firebase';
@@ -30,7 +28,7 @@ const Login = (props) => {
         if(!isLogin) {
             let email = emailRef.current.value
             let password = passwordRef.current.value
-            let name = nameRef.current.value
+            let name = nameRef.current.value.toLowerCase()
             
             if(email!==""||password!==""||name!=="") {
 
@@ -40,7 +38,7 @@ const Login = (props) => {
                     
                     if(res.user) {
                         const uid = res.user.uid
-                        let obj = {email:email, name:name, followers:[], followings:[], posts:[], uid: uid, profileImg:''}
+                        let obj = {email:email, name:name, followers:[], followings:[], posts:[], uid: uid, profileImg:'https://firebasestorage.googleapis.com/v0/b/insta-clone-6e4ba.appspot.com/o/users%2Fplaceholder.jpeg?alt=media&token=4a955f61-f821-4f57-b3ae-86fe443b382b'}
                         try{
                             const db = firebase.firestore().collection('users').doc(uid)
                             await db.set(obj)
@@ -108,7 +106,7 @@ const Login = (props) => {
                     </div>
 
                     <div className={classes.lower}>
-                        <p>{isLogin?`Don't have a account?`:`Already have an account`} <button onClick={switchLoginHandler}>{isLogin?`Sign Up Now!!`:`Login now!!`}</button></p>
+                        <p>{isLogin?`Don't have a account?`:`Already have an account`} <button className={classes.simpleBtn} onClick={switchLoginHandler}>{isLogin?`Sign Up Now!!`:`Login now!!`}</button></p>
                     </div>
                 </div>
             </div>

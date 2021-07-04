@@ -165,3 +165,18 @@
 .login:active {
   transform: translateY(0.2rem);
 }
+
+.lower p {
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+.simpleBtn {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #0095f6;
+  outline: none;
+  background-color: transparent;
+  border: none;
+  margin-left: 0.5rem;
+}

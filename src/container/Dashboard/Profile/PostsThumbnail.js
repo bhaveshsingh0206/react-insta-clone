@@ -4,10 +4,7 @@ import classes from './PostsThumbnail.module.css';
 
 const PostsThumbnail = (props) => {
     
-    const postHandler = (event,id) => {
-        console.log(id)
-        console.log("idddd===== in thumb", id)
-
+    const postHandler = (_,id) => {
         props.expand(id)
     }
 

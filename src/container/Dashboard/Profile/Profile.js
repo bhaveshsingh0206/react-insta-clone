@@ -12,7 +12,7 @@ const Profile = (props) => {
     const userCtx = useContext(UserContext);
     
     const [image, setImage] = useState('')
-
+    const [follow, setFollow] = useState(false)
     const { id } = useParams();
     const uid = userCtx.currentUser.uid
     const [error, setError] = useState(false)
@@ -25,17 +25,48 @@ const Profile = (props) => {
         userCtx.logout()
     }
 
+    useEffect(async ()=>{
+        if(uid) {
+            const db = firebase.firestore()
+        const ref = db.collection('users').doc(uid)
+        try{
+            const snapshot = await ref.get()
+            const data = await snapshot.data()
+
+            for (const u of data.followings) {
+                if(u===uid) {
+                    setFollow(true)
+                }
+            }
+        } catch{
+
+        }
+        }
+        
+        
+    }, [uid])
+
     useEffect(()=>{
         console.log("userData ", userData)
     }, [userData])
 
+    
 
     useEffect(()=>{
         
         async function getData() {
             const db = firebase.firestore()
             const ref = db.collection('users').doc(id)
+
+            // const t = ref
+            // const snapshot = await t.where(uid, 'in', 'followings').get()
             try{
+                
+                // if(snapshot.empty) {
+                //     setFollow(true)
+                // } else {
+                //     setFollow(false)
+                // }
                 let data = await ref.get()
                 data = data.data()
                 console.log(data)
@@ -150,6 +181,11 @@ const Profile = (props) => {
         setModal(false)
     }
 
+    const followHandler = () => {
+        setFollow((prev)=>{
+            return !prev
+        })
+    }
     return(
         <>
          {showModal&&<Post data={postsDetails} dismiss={dismissHandler} />}
@@ -167,6 +203,7 @@ const Profile = (props) => {
                     <p className={classes.email}>{userData.email}</p>
                     <p className={classes.details}><span>{userData.posts.length}</span> posts <span>{userData.followings.length}</span> followings <span>{userData.followers.length}</span> followers</p>
                     {id===uid&&<button className={classes.btn} onClick={logouthandler}>Logout</button>}
+                    {id!==uid&&<button className={!follow?`${classes.bt}`:`${classes.bt} ${classes.log}`} onClick={followHandler}>{!follow?'Follow':'Unfollow'}</button>}
                     
                 </div>
             </div>
