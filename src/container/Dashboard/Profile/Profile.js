@@ -28,27 +28,31 @@ const Profile = (props) => {
     useEffect(async ()=>{
         if(uid) {
             const db = firebase.firestore()
-        const ref = db.collection('users').doc(uid)
-        try{
-            const snapshot = await ref.get()
-            const data = await snapshot.data()
-
-            for (const u of data.followings) {
-                if(u===uid) {
-                    setFollow(true)
+            const ref = db.collection('users').doc(uid)
+            
+                const snapshot = await ref.get()
+                const data = await snapshot.data()
+                let count =0;
+                for (const u of data.followings) {
+                    let res = await u.get()
+                    res = await res.data()
+                    
+                    if(res.uid===id) {
+                        setFollow(true)
+                    } else {
+                        count+=1
+                    }
                 }
+                if(count===data.followings.length) {
+                    setFollow(false)
+                }
+            
             }
-        } catch{
-
-        }
-        }
         
         
-    }, [uid])
+    }, [uid, id])
 
-    useEffect(()=>{
-        console.log("userData ", userData)
-    }, [userData])
+ 
 
     
 
@@ -61,6 +65,7 @@ const Profile = (props) => {
             // const t = ref
             // const snapshot = await t.where(uid, 'in', 'followings').get()
             try{
+                
                 
                 // if(snapshot.empty) {
                 //     setFollow(true)
@@ -97,7 +102,7 @@ const Profile = (props) => {
         }   
 
         getData()
-    }, [showModal, id])
+    }, [showModal, id, follow])
 
     const changeProfileHandler = (event) => {
         
@@ -181,10 +186,47 @@ const Profile = (props) => {
         setModal(false)
     }
 
-    const followHandler = () => {
+    const followHandler = async () => {
+        try{
+            if(follow) {
+            if(uid) {
+                
+                let db = firebase.firestore().collection('users').doc(uid)
+                await db.update({         
+                    followings: firebase.firestore.FieldValue.arrayRemove(firebase.firestore().collection('users').doc(id))
+                })
+
+                db = firebase.firestore().collection('users').doc(id)
+
+                await db.update({         
+                    followers: firebase.firestore.FieldValue.arrayRemove(firebase.firestore().collection('users').doc(uid))
+                })
+            }
+        } else {
+            if(uid) {
+                let db = firebase.firestore().collection('users').doc(uid)
+                await db.update({         
+                    followings: firebase.firestore.FieldValue.arrayUnion(firebase.firestore().collection('users').doc(id))
+                })
+
+                db = firebase.firestore().collection('users').doc(id)
+
+                await db.update({         
+                    followers: firebase.firestore.FieldValue.arrayUnion(firebase.firestore().collection('users').doc(uid))
+                })
+            }
+            
+        }
         setFollow((prev)=>{
             return !prev
         })
+        console.log("Done")
+        } catch(er) {
+            console.log(er)
+        }
+        
+
+        
     }
     return(
         <>
