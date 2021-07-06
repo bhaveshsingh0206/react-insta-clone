@@ -72,9 +72,9 @@ const userCtx = useContext(UserContext);
                     <NavLink activeClassName={classes.active} to='/feed' className={classes['navbar-icon-link']}><i className="fas fa-home"></i></NavLink>
                 </li>
 
-                <li className={classes['navbar-icon']}>
+                {/* <li className={classes['navbar-icon']}>
                     <NavLink activeClassName={classes.active}  to='/notifs' className={classes['navbar-icon-link']}><i className="fas fa-heart"></i></NavLink>
-                </li>
+                </li> */}
 
                 <li className={classes['navbar-icon']}>
                     <NavLink activeClassName={classes.active} to='/messages' className={classes['navbar-icon-link']}><i className="fab fa-facebook-messenger"></i></NavLink>

@@ -1,0 +1,134 @@
+.container {
+  width: 80%;
+  /* background-color: red; */
+  height: 80vh;
+  margin: 0 auto;
+  display: flex;
+  border: 1.5px solid #ddd;
+  border-radius: 5px;
+}
+
+.left {
+  width: 25rem;
+  background-color: white;
+}
+
+.left ul {
+  list-style: none;
+  width: 100%;
+  max-height: 100%;
+  overflow: auto;
+  border-right: 1.5px solid #ddd;
+
+  /* background-color: black; */
+}
+
+.left ul li {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  transition: all 0.1s;
+  /* border-bottom: 1px solid #eee; */
+}
+.left ul li:hover {
+  background-color: #eee;
+}
+
+.imgContainer {
+  width: 4rem;
+  height: 4rem;
+  display: inline-block;
+  margin-right: 1rem;
+}
+.imgContainer img {
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+}
+
+.sendMessage {
+  width: 100%;
+  position: absolute;
+  bottom: 0rem;
+  padding: 2rem;
+}
+
+.sendMessage input {
+  font: inherit;
+  color: inherit;
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color: white;
+  border-radius: 100px;
+  padding: 1rem 2rem;
+  font-size: 1.4rem;
+  border: 1.5px solid #ddd;
+}
+.btn {
+  position: absolute;
+  right: 3rem;
+  bottom: 2rem;
+  background-color: transparent;
+  color: #0095f6;
+  font-weight: 600;
+  text-transform: uppercase;
+  outline: none;
+  border: none;
+  font-size: 1.4rem;
+  padding: 1rem;
+}
+.sendMessage input::-webkit-input-placeholder {
+  color: #ddd;
+}
+.right {
+  flex: 1;
+  height: calc(100%);
+  position: relative;
+  max-height: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.4rem;
+
+  /* background-color: blue; */
+}
+.user {
+  border-radius: 10px;
+  background-color: #0095f6;
+  max-width: 50%;
+  align-self: flex-start;
+  padding: 1rem;
+  margin: 1rem 0rem 0 2rem;
+  color: #fafafa;
+  /* display: flex;
+  justify-content: flex-start; */
+}
+
+.sender {
+  border-radius: 10px;
+
+  background-color: #eee;
+  max-width: 50%;
+  padding: 1rem;
+  align-self: flex-end;
+  margin: 1rem 2rem 0 0rem;
+  /* display: flex;
+  justify-content: flex-end; */
+}
+
+.header {
+  border-bottom: 1.5px solid #ddd;
+  height: 6rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+.header span {
+  margin-left: 2rem;
+}
