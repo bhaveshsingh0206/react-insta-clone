@@ -1,27 +1,81 @@
 import classes from './Message.module.css';
-import pic from '../../../assets/profile.jpg'
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
+import firebase from '../../../utils/firebase';
+import UserContext from '../../../store/firebase-authUser';
+import { v4 as uuidv4 } from 'uuid';
+
 
 const Message = (props) => {
 
     const [showSendButton, setShowSendButton] = useState(false)
     const messageRef = useRef()
-    const [message, setMessage] = useState(null)
+    const userCtx = useContext(UserContext);
+    const uid = userCtx.currentUser.uid
+    const [message, setMessage] = useState([])
+    const [users, setUsers] = useState([])
+    const [selectedUser, setSelectedUser] = useState({name:"",img:"", uid:"", secretKey:""})
+    const [update, setUpdate] = useState(false)
+ 
+  
+   useEffect(()=>{
+       console.log("selectedUser.secretKey ", selectedUser.secretKey)
+    firebase.firestore().collection('messages').where('secretKey','==',selectedUser.secretKey).orderBy('timesnap').limit(50).onSnapshot(snapshot => {
+        const t = snapshot.docs.map(doc => doc.data())
+        console.log("Messages")
+        console.log(t)
+        setMessage(t.map((obj)=> <div  key={obj.timesnap}  className={obj.sender===uid?`${classes.user}`:`${classes.sender}`}><p>{obj.message}</p></div>))
+    })
+   }, selectedUser)
 
-    useEffect(()=>{
-        setMessage([
-            <div  key="rc"  className={classes.user}><p>HI! There my name is Anthony Gonsalvis</p></div>,
-                <div key="rf" className={classes.sender}><p>HI! There my name is Bhavesh Singh</p></div>,
-                <div key="de" className={classes.sender}><p>HI! There my name is Bhavesh Singh</p></div>,
-                <div  key="def" className={classes.sender}><p>HI! There my name is Bhavesh Singh</p></div>,
-        <div key="decxwf" className={classes.user}><p>HI! There my name is Anthony Gonsalvis</p></div>,
+    const loadMessagesHandler = (_, id, name, img, secretKey) => {
+        let obj = {
+            name: name,
+            img: img,
+            uid:id,
+            secretKey:secretKey
+        }
+    //    console.log(selectedUser.secretKey)
+        
+        
+    firebase.firestore().collection('messages').where('secretKey','==',secretKey).orderBy('timesnap').limit(50).onSnapshot(snapshot => {
+        const t = snapshot.docs.map(doc => doc.data())
+        console.log("Messages")
+        console.log(t)
+        setMessage(t.map((obj)=> <div  key={obj.timesnap}  className={obj.sender===uid?`${classes.user}`:`${classes.sender}`}><p>{obj.message}</p></div>))
+    })
 
-                <div  key="edef" className={classes.sender}><p>HI! There my name is Bhavesh Singh</p></div>,
-        <div key="edf" className={classes.user}><p>HI! There my name is Anthony Gonsalvis</p></div>,
-        <div key="edfef" className={classes.user}><p>HI! There my name is Anthony Gonsalvis</p></div>,
-        <div key="eccee" className={classes.user}><p>HI! There my name is Anthony Gonsalvis</p></div>
-        ])
-    }, [])
+        setMessage([])
+        setSelectedUser(obj)
+        setUpdate(true)
+    }   
+    
+
+    useEffect(async ()=>{
+        try{
+            let ref = firebase.firestore().collection('users').doc(uid)
+            let data = await ref.get()
+            data = await data.data()
+            let conversations = []
+            
+
+            for (const t of data.chats) {
+                let i=t.userId
+                ref = firebase.firestore().collection('users').doc(i.trim())
+                let dat = await ref.get()
+                dat = await dat.data()
+                let obj = <li key={dat.uid} onClick={(event)=>{loadMessagesHandler(event, dat.uid, dat.name, dat.profileImg, t.secretKey)}}><span className={classes.imgContainer}><img  lt="okokokok" src={dat.profileImg}/></span>{dat.name}</li>
+
+                conversations.push(obj)
+            }
+
+            setUsers(conversations)
+
+
+            
+        } catch(er){
+            console.log(er)
+        }
+    }, [uid])
 
     const messageHandler = (event) => {
         if(event.target.value.length>0) {
@@ -31,44 +85,63 @@ const Message = (props) => {
         }
     }
 
-    const sendMessage = () => {
-        let me = messageRef.current.value
-        let obj = <div key={`${Math.random}`} className={classes.user}><p>{me}</p></div>
+    const onKeyHandler = (e) => {
+        if(messageRef.current.value.length>0&&e.charCode === 13) {
+            sendMessage()
+        }
+    }
+
+    const sendMessage = async () => {
+        let mess = messageRef.current.value
+        let u = uuidv4();
+        let obj = <div key={u} className={classes.user}><p>{mess}</p></div>
+
+        
         setMessage((prev)=>{
             return [...prev, obj]
         })
         messageRef.current.value = ""
         setShowSendButton(false)
+        let db = firebase.firestore().collection('messages').doc(u)
+
+        obj = {
+            timesnap: firebase.firestore.FieldValue.serverTimestamp(),
+            sender: uid,
+            receiver: selectedUser.uid,
+            message: mess,
+            secretKey: selectedUser.secretKey
+        }
+        try{
+            await db.set(obj)
+        } catch(e) {
+            console.log(e)
+        }
+
+
+        
 
     }
 
     return (<div className={classes.container}>
         <div className={classes.left}>
-            <ul>
-                <li><span className={classes.imgContainer}><img  lt="okokokok" src={pic}/></span>Bhavesh</li>
-                <li><span className={classes.imgContainer}><img alt="okokokok" src={pic}/></span>Bhavesh</li>
-                <li><span className={classes.imgContainer}><img alt="okokokok" src={pic}/></span>Bhavesh</li>
-                <li><span className={classes.imgContainer}><img alt="okokokok" src={pic}/></span>Bhavesh</li>
-                <li><span className={classes.imgContainer}><img alt="okokokok" src={pic}/></span>Bhavesh</li>
-                <li><span className={classes.imgContainer}><img alt="okokokok" src={pic}/></span>Bhavesh</li>
-                <li><span className={classes.imgContainer}><img alt="okokokok" src={pic}/></span>Bhavesh</li>
-                <li><span className={classes.imgContainer}><img alt="okokokok" src={pic}/></span>Bhavesh</li>
-                <li><span className={classes.imgContainer}><img alt="okokokok" src={pic}/></span>Bhavesh</li>
-                
-            </ul>
+            {users.length===0&&<h5 className={classes.nodata}>No conversations</h5>}
+
+            {users.length>0&&<ul>{users}</ul>}
         </div>
-        <div className={classes.right}>
-            <div className={classes.header}><span className={classes.imgContainer}><img alt="c" src={pic}/></span>Himanshu</div>
-                {message}
+        {update&&<div className={classes.right}>
+            <div className={classes.header}><span className={classes.imgContainer}><img alt="profileImage" src={selectedUser.img}/></span>{selectedUser.name}</div>
+                <div className={classes.okok}>{message}</div>
+                
 
 
             <div className={classes.sendMessage}>
                 
                 
-                <input onChange={messageHandler} ref={messageRef} placeholder="Enter Message" type="text" />
+                <input onKeyPress={onKeyHandler} onChange={messageHandler} ref={messageRef} placeholder="Enter Message" type="text" />
                 {showSendButton&&<button onClick={sendMessage} className={classes.btn}>SEND</button>}
             </div>
-        </div>
+        </div>}
+        {!update&&<h5 className={classes.nodata}>{users.length===0?"No Conversations":"Select a User"}</h5>}
     </div>)
 }
 

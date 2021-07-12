@@ -6,6 +6,7 @@ import {useParams} from 'react-router-dom';
 import PostsThumbnail from './PostsThumbnail';
 import placeholder from '../../../assets/placeholder.jpeg'
 import Post from '../Posts/Post';
+import { v4 as uuidv4 } from 'uuid';
 
 const Profile = (props) => {
 
@@ -21,6 +22,7 @@ const Profile = (props) => {
     const [userData, setUserData] = useState(null);
     const [showModal, setModal] = useState(false)
     const [postsDetails, setPostDetails] = useState(null)
+    
     const logouthandler = () => {
         userCtx.logout()
     }
@@ -186,6 +188,38 @@ const Profile = (props) => {
         setModal(false)
     }
 
+
+    const conversationHandler = async () => {
+        let db = firebase.firestore()
+        let ref = db.collection('users').where('uid','==',uid).where('chatUsers', 'array-contains',id)
+        let data = await ref.get()
+        let secretKey = uuidv4()
+        if(!data.empty) {
+            console.log(userCtx)
+
+        } else {
+            let ref = db.collection('users').doc(uid)
+            ref.update({
+                chatUsers: firebase.firestore.FieldValue.arrayUnion(id),
+                chats: firebase.firestore.FieldValue.arrayUnion({
+                    secretKey:secretKey,
+                    userId: id
+                })
+            })
+
+            ref = db.collection('users').doc(id)
+            ref.update({
+                chatUsers: firebase.firestore.FieldValue.arrayUnion(uid),
+                chats: firebase.firestore.FieldValue.arrayUnion({
+                    secretKey:secretKey,
+                    userId: uid
+                })
+            })
+            console.log("Done updating")
+        }
+    }
+
+
     const followHandler = async () => {
         try{
             if(follow) {
@@ -239,12 +273,13 @@ const Profile = (props) => {
                     {id===uid&&<><label htmlFor="profile" className={classes.label}></label>
                     <input onChange={changeProfileHandler} id="profile" type="file" /></>}
                 </div>
-
+                
                 <div className={classes['info']}>
-                    <p className={classes.name}>{userData.name}</p>
+                    <p className={classes.name}>{userData.name}</p>{id!==uid&&<button onClick={conversationHandler} className={classes.o}>Message <i className="fab fa-facebook-messenger"></i></button>}
                     <p className={classes.email}>{userData.email}</p>
                     <p className={classes.details}><span>{userData.posts.length}</span> posts <span>{userData.followings.length}</span> followings <span>{userData.followers.length}</span> followers</p>
                     {id===uid&&<button className={classes.btn} onClick={logouthandler}>Logout</button>}
+                    
                     {id!==uid&&<button className={!follow?`${classes.bt}`:`${classes.bt} ${classes.log}`} onClick={followHandler}>{!follow?'Follow':'Unfollow'}</button>}
                     
                 </div>
