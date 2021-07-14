@@ -3,13 +3,14 @@ import classes from './AddPost.module.css';
 import { v4 as uuidv4 } from 'uuid';
 import firebase from '../../../../utils/firebase';
 import UserContext from '../../../../store/firebase-authUser';
+import { useHistory } from 'react-router-dom';
 
 const AddPost = (props) => {
     const [image, setImage] = useState('');
     const [actualImage, setActualImage] = useState('');
     const [caption, setCaption] = useState('');
     const userCtx = useContext(UserContext)
-    
+    const history = useHistory()
     async function addPost() {
         console.log('Adding post......')
         let storageRef = firebase.storage().ref();
@@ -42,6 +43,7 @@ const AddPost = (props) => {
                             
                             posts: firebase.firestore.FieldValue.arrayUnion(postRef)
                         }).then(()=>{
+                            history.push('/'+userCtx.currentUser.uid)
                             console.log("Done")
                         }).catch(()=>{
                             console.log('Error')

@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import UserContext from '../../store/firebase-authUser';
 import classes from './Navbar.module.css';
@@ -47,6 +47,7 @@ const goToProfileHandler = (event) => {
     setSearch(false)
     history.push(`/${event.target.id}`)
 }
+
 const userCtx = useContext(UserContext);
     // console.log("navbar ", userCtx.currentUser)
     let uid = ''

@@ -3,6 +3,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import firebase from '../../../utils/firebase';
 import UserContext from '../../../store/firebase-authUser';
 import { v4 as uuidv4 } from 'uuid';
+import MessageArea from './MessageArea';
 
 
 const Message = (props) => {
@@ -11,20 +12,30 @@ const Message = (props) => {
     const messageRef = useRef()
     const userCtx = useContext(UserContext);
     const uid = userCtx.currentUser.uid
-    const [message, setMessage] = useState([])
+    // const [message, setMessage] = useState([])
     const [users, setUsers] = useState([])
     const [selectedUser, setSelectedUser] = useState({name:"",img:"", uid:"", secretKey:""})
     const [update, setUpdate] = useState(false)
- 
+    const divRef = useRef();
+
+    useEffect(() => {
+        if (divRef.current) {
+          divRef.current.addEventListener('DOMNodeInserted', event => {
+            const { currentTarget: target } = event;
+            // console.log(":okokok")
+            target.scroll({ top: target.scrollHeight, behavior: 'smooth' });
+          });
+        }
+      })
   
    useEffect(()=>{
        console.log("selectedUser.secretKey ", selectedUser.secretKey)
-    firebase.firestore().collection('messages').where('secretKey','==',selectedUser.secretKey).orderBy('timesnap').limit(50).onSnapshot(snapshot => {
-        const t = snapshot.docs.map(doc => doc.data())
-        console.log("Messages")
-        console.log(t)
-        setMessage(t.map((obj)=> <div  key={obj.timesnap}  className={obj.sender===uid?`${classes.user}`:`${classes.sender}`}><p>{obj.message}</p></div>))
-    })
+    // firebase.firestore().collection('messages').where('secretKey','==',selectedUser.secretKey).orderBy('timesnap').limit(50).onSnapshot(snapshot => {
+    //     const t = snapshot.docs.map(doc => doc.data())
+    //     console.log("Messages")
+    //     console.log(t)
+    //     setMessage(t.map((obj)=> <div  key={obj.timesnap}  className={obj.sender===uid?`${classes.user}`:`${classes.sender}`}><p>{obj.message}</p></div>))
+    // })
    }, selectedUser)
 
     const loadMessagesHandler = (_, id, name, img, secretKey) => {
@@ -34,17 +45,7 @@ const Message = (props) => {
             uid:id,
             secretKey:secretKey
         }
-    //    console.log(selectedUser.secretKey)
-        
-        
-    firebase.firestore().collection('messages').where('secretKey','==',secretKey).orderBy('timesnap').limit(50).onSnapshot(snapshot => {
-        const t = snapshot.docs.map(doc => doc.data())
-        console.log("Messages")
-        console.log(t)
-        setMessage(t.map((obj)=> <div  key={obj.timesnap}  className={obj.sender===uid?`${classes.user}`:`${classes.sender}`}><p>{obj.message}</p></div>))
-    })
 
-        setMessage([])
         setSelectedUser(obj)
         setUpdate(true)
     }   
@@ -97,9 +98,9 @@ const Message = (props) => {
         let obj = <div key={u} className={classes.user}><p>{mess}</p></div>
 
         
-        setMessage((prev)=>{
-            return [...prev, obj]
-        })
+        // setMessage((prev)=>{
+        //     return [...prev, obj]
+        // })
         messageRef.current.value = ""
         setShowSendButton(false)
         let db = firebase.firestore().collection('messages').doc(u)
@@ -130,7 +131,7 @@ const Message = (props) => {
         </div>
         {update&&<div className={classes.right}>
             <div className={classes.header}><span className={classes.imgContainer}><img alt="profileImage" src={selectedUser.img}/></span>{selectedUser.name}</div>
-                <div className={classes.okok}>{message}</div>
+                <div ref={divRef} className={classes.okok}><MessageArea r={divRef} secretKey={selectedUser.secretKey}/></div>
                 
 
 

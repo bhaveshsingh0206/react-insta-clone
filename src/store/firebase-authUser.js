@@ -28,7 +28,6 @@ export const UserContextProvider = (props) => {
     useEffect( ()=> {
         
         const un = firebase.auth().onAuthStateChanged((user)=>{
-            console.log("loaded user data")
             setCurrentUser(JSON.parse(JSON.stringify(user)))
         })
 

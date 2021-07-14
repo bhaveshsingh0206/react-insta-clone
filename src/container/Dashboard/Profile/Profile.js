@@ -2,14 +2,14 @@ import classes from './Profile.module.css';
 import UserContext from '../../../store/firebase-authUser';
 import {useContext, useEffect, useState} from 'react'
 import firebase from '../../../utils/firebase'
-import {useParams} from 'react-router-dom';
+import {useHistory, useParams} from 'react-router-dom';
 import PostsThumbnail from './PostsThumbnail';
 import placeholder from '../../../assets/placeholder.jpeg'
 import Post from '../Posts/Post';
 import { v4 as uuidv4 } from 'uuid';
 
 const Profile = (props) => {
-
+    const history = useHistory()
     const userCtx = useContext(UserContext);
     
     const [image, setImage] = useState('')
@@ -126,9 +126,6 @@ const Profile = (props) => {
     }
 
     async function expandPosthandler(id){
-
-        console.log("idddd===== ", id)
-
         try{
         let postsDetail = userData.posts.filter((post)=>{
             return post.id===id
@@ -147,7 +144,6 @@ const Profile = (props) => {
         
         let userDetails = await postsDetail.userid.get()
         userDetails = userDetails.data()
-        // console.log("userDetails ", userDetails)
         obj.name=userDetails.name
         obj.profileImg=userDetails.profileImg
 
@@ -173,8 +169,7 @@ const Profile = (props) => {
         setPostDetails(obj)
         
         setTimeout(()=>{
-            console.log("--------------")
-            console.log(postsDetail)
+            
             setModal(true)
         }, 500)
         
@@ -196,6 +191,7 @@ const Profile = (props) => {
         let secretKey = uuidv4()
         if(!data.empty) {
             console.log(userCtx)
+            history.push('/messages')
 
         } else {
             let ref = db.collection('users').doc(uid)
@@ -216,6 +212,7 @@ const Profile = (props) => {
                 })
             })
             console.log("Done updating")
+            history.push('/messages')
         }
     }
 
