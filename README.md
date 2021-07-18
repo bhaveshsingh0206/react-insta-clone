@@ -8,10 +8,13 @@ Instagram CLone is a React.js Web Application created for the sole purpose of le
 
 ### Technology Stack
 
-Web Frontend developed using React.js
-Backend developed using Node.js/Express
-User registration using Google Login and Firebase Authenication
-Data stored in Firebase
+###### Web Frontend developed using React.js
+
+###### Backend developed using Node.js/Express
+
+###### User registration using Google Login and Firebase Authenication
+
+###### Data stored in Firebase
 
 ### Features
 
@@ -24,14 +27,22 @@ Data stored in Firebase
 
 ## React Screenshots
 
-### Dashboard
+### Login
 
 ![Login](images/1.png)
 
+### Profile
+
 ![Profile](images/7.png)
+
+### Chat
 
 ![Chat](images/4.png)
 
+### Post
+
 ![Posts](images/2.png)
+
+### Dashboard
 
 ![Dashboard](images/5.png)
