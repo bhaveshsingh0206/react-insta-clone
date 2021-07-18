@@ -2,7 +2,7 @@
 
 ### About
 
-Instagram CLone is a React.js Web Application created for the sole purpose of learning.
+Instagram Clone is a React.js Web Application created for the sole purpose of learning.
 
 #### [View the application live](https://insta-clone-6e4ba.web.app/login)
 
