@@ -27,3 +27,11 @@ Data stored in Firebase
 ### Dashboard
 
 ![Login](images/1.png)
+
+![Profile](images/7.png)
+
+![Chat](images/4.png)
+
+![Posts](images/2.png)
+
+![Dashboard](images/5.png)
